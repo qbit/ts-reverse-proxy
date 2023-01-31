@@ -11,7 +11,7 @@
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
     in {
       overlay = final: prev: {
-        ts-reverse-proxy = self.packages.${prev.system}.ts-reverse-proxy;
+        inherit (self.packages.${prev.system}) ts-reverse-proxy;
       };
       packages = forAllSystems (system:
         let pkgs = nixpkgsFor.${system};
