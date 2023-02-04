@@ -18,7 +18,7 @@
         in {
           ts-reverse-proxy = pkgs.buildGoModule {
             pname = "ts-reverse-proxy";
-            version = "v0.0.0";
+            version = "v0.0.1";
             src = ./.;
 
             vendorSha256 = "sha256-QcuL7qjNTloLBYnT2pZtYDZlj2/qm8sNS7EUVBbCp7U=";

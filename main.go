@@ -8,10 +8,23 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"time"
 
 	"tailscale.com/client/tailscale"
 	"tailscale.com/tsnet"
 )
+
+func httpLog(r *http.Request) {
+	n := time.Now()
+	fmt.Printf("%s (%s) [%s] \"%s %s\" %03d\n",
+		r.RemoteAddr,
+		n.Format(time.RFC822Z),
+		r.Method,
+		r.URL.Path,
+		r.Proto,
+		r.ContentLength,
+	)
+}
 
 func main() {
 	sName := flag.String("name", "", "server name we will be reverse proxying for")
@@ -43,6 +56,7 @@ func main() {
 		req.Header.Add("X-Origin-Host", rpURL.Host)
 		req.URL.Scheme = rpURL.Scheme
 		req.URL.Host = rpURL.Host
+		httpLog(req)
 	}}
 
 	mux := http.NewServeMux()
