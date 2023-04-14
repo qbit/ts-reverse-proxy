@@ -1,7 +1,7 @@
 {
   description = "ts-reverse-proxy: a TailScale aware reverse proxy";
 
-  inputs.nixpkgs.url = "nixpkgs/nixos-22.11";
+  inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
 
   outputs = { self, nixpkgs }:
     let
@@ -16,13 +16,12 @@
       packages = forAllSystems (system:
         let pkgs = nixpkgsFor.${system};
         in {
-          ts-reverse-proxy = pkgs.buildGoModule {
+          ts-reverse-proxy = pkgs.buildGo120Module {
             pname = "ts-reverse-proxy";
-            version = "v0.0.1";
+            version = "v0.2.0";
             src = ./.;
 
-            vendorSha256 = "sha256-QcuL7qjNTloLBYnT2pZtYDZlj2/qm8sNS7EUVBbCp7U=";
-            proxyVendor = true;
+            vendorSha256 = "sha256-fms94pTqN088tzlXGABo3BpAK3F+sNwwS4fr0SIcJZg=";
           };
         });
 
@@ -35,7 +34,7 @@
               PS1='\u@\h:\@; '
               echo "Go `${pkgs.go}/bin/go version`"
             '';
-            nativeBuildInputs = with pkgs; [ git go gopls go-tools ];
+            nativeBuildInputs = with pkgs; [ git go_1_20 gopls go-tools ];
           };
         });
     };
