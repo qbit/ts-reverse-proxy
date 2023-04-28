@@ -18,10 +18,10 @@
         in {
           ts-reverse-proxy = pkgs.buildGo120Module {
             pname = "ts-reverse-proxy";
-            version = "v0.2.0";
+            version = "v0.2.1";
             src = ./.;
 
-            vendorSha256 = "sha256-fms94pTqN088tzlXGABo3BpAK3F+sNwwS4fr0SIcJZg=";
+            vendorSha256 = "sha256-L9XWqXlVoUVEGcic7X1x8dbgvE9VopNxTrdzF+jFPB4=";
           };
         });
 
@@ -34,7 +34,7 @@
               PS1='\u@\h:\@; '
               echo "Go `${pkgs.go}/bin/go version`"
             '';
-            nativeBuildInputs = with pkgs; [ git go_1_20 gopls go-tools ];
+            nativeBuildInputs = with pkgs; [ git go_1_20 gopls go-tools graphviz ];
           };
         });
     };

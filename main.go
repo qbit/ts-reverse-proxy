@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httputil"
+	_ "net/http/pprof"
 	"net/url"
 	"time"
 
@@ -29,7 +30,8 @@ func httpLog(r *http.Request) {
 func main() {
 	sName := flag.String("name", "", "server name we will be reverse proxying for")
 	cIP := flag.String("ip", "127.0.0.1", "ip address to reverse proxy to")
-	cPort := flag.Int("port", 5000, "port to revres proxy to")
+	cPort := flag.Int("port", 5000, "port to reverse proxy to")
+	prof := flag.Bool("prof", false, fmt.Sprintf("expose pprof on port %d", *cPort+1))
 	flag.Parse()
 
 	tsServer := &tsnet.Server{
@@ -39,6 +41,12 @@ func main() {
 	tsLocalClient, err := tsServer.LocalClient()
 	if err != nil {
 		log.Fatal("can't get ts local client: ", err)
+	}
+
+	if *prof {
+		go func() {
+			log.Println(http.ListenAndServe(fmt.Sprintf("localhost:%d", *cPort+1), nil))
+		}()
 	}
 
 	ln, err := tsServer.Listen("tcp", ":443")
