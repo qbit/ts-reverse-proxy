@@ -33,6 +33,7 @@
             shellHook = ''
               PS1='\u@\h:\@; '
               echo "Go `${pkgs.go}/bin/go version`"
+              nix run github:qbit/xin#flake-warn
             '';
             nativeBuildInputs = with pkgs; [ git go_1_20 gopls go-tools graphviz ];
           };
