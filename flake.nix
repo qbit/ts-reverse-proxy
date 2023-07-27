@@ -1,7 +1,7 @@
 {
   description = "ts-reverse-proxy: a TailScale aware reverse proxy";
 
-  inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
+  inputs.nixpkgs.url = "nixpkgs";
 
   outputs = { self, nixpkgs }:
     let
@@ -16,12 +16,12 @@
       packages = forAllSystems (system:
         let pkgs = nixpkgsFor.${system};
         in {
-          ts-reverse-proxy = pkgs.buildGo120Module {
+          ts-reverse-proxy = pkgs.buildGoModule {
             pname = "ts-reverse-proxy";
-            version = "v0.2.1";
+            version = "v1.0.0";
             src = ./.;
 
-            vendorSha256 = "sha256-L9XWqXlVoUVEGcic7X1x8dbgvE9VopNxTrdzF+jFPB4=";
+            vendorSha256 = "sha256-4m9+yCeYWl5bDLxT6oClTUPQtnZsJEdxj7byh6ZZkdI=";
           };
         });
 
