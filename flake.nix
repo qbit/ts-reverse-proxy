@@ -1,7 +1,7 @@
 {
   description = "ts-reverse-proxy: a TailScale aware reverse proxy";
 
-  inputs.nixpkgs.url = "nixpkgs";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs";
 
   outputs = { self, nixpkgs }:
     let
@@ -16,12 +16,12 @@
       packages = forAllSystems (system:
         let pkgs = nixpkgsFor.${system};
         in {
-          ts-reverse-proxy = pkgs.buildGoModule {
+          ts-reverse-proxy = pkgs.buildGo121Module {
             pname = "ts-reverse-proxy";
-            version = "v1.0.0";
+            version = "v1.0.1";
             src = ./.;
 
-            vendorSha256 = "sha256-4m9+yCeYWl5bDLxT6oClTUPQtnZsJEdxj7byh6ZZkdI=";
+            vendorSha256 = "sha256-DmmEXXXi+19+OcW6DTQ2bCbebIldDdkMRjvm6Dp3Df0=";
           };
         });
 
@@ -35,7 +35,7 @@
               echo "Go `${pkgs.go}/bin/go version`"
               nix run github:qbit/xin#flake-warn
             '';
-            nativeBuildInputs = with pkgs; [ git go_1_20 gopls go-tools graphviz ];
+            nativeBuildInputs = with pkgs; [ git go_1_21 gopls go-tools graphviz ];
           };
         });
     };
