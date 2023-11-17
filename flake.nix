@@ -5,6 +5,7 @@
 
   outputs = { self, nixpkgs }:
     let
+      goVer = "_1_21";
       supportedSystems =
         [ "x86_64-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -15,27 +16,29 @@
       };
       packages = forAllSystems (system:
         let pkgs = nixpkgsFor.${system};
+        buildGoModule = pkgs.buildGo121Module;
         in {
-          ts-reverse-proxy = pkgs.buildGo121Module {
+          ts-reverse-proxy = buildGoModule {
             pname = "ts-reverse-proxy";
-            version = "v1.0.1";
+            version = "v1.0.3";
             src = ./.;
 
-            vendorSha256 = "sha256-DmmEXXXi+19+OcW6DTQ2bCbebIldDdkMRjvm6Dp3Df0=";
+            vendorHash = "sha256-gRj6rSZqyMbQB4VRQuOT/jQKcKNR11igvuVt/Bv1zqM=";
           };
         });
 
       defaultPackage = forAllSystems (system: self.packages.${system}.ts-reverse-proxy);
       devShells = forAllSystems (system:
         let pkgs = nixpkgsFor.${system};
+        go = pkgs."go${goVer}";
         in {
           default = pkgs.mkShell {
             shellHook = ''
               PS1='\u@\h:\@; '
-              echo "Go `${pkgs.go}/bin/go version`"
+              echo "Go `${go}/bin/go version`"
               nix run github:qbit/xin#flake-warn
             '';
-            nativeBuildInputs = with pkgs; [ git go_1_21 gopls go-tools graphviz ];
+            nativeBuildInputs = with pkgs; [ git go gopls go-tools graphviz ];
           };
         });
     };
