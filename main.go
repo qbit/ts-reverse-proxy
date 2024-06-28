@@ -31,6 +31,7 @@ func main() {
 	sName := flag.String("name", "", "server name we will be reverse proxying for")
 	cIP := flag.String("ip", "127.0.0.1", "ip address to reverse proxy to")
 	cPort := flag.Int("port", 5000, "port to reverse proxy to")
+	cHost := flag.String("host-header", "", "manually set the Host header to this value")
 	prof := flag.Bool("prof", false, fmt.Sprintf("expose pprof on port %d", *cPort+1))
 	flag.Parse()
 
@@ -63,7 +64,11 @@ func main() {
 		req.Header.Add("X-Forwarded-Host", req.Host)
 		req.Header.Add("X-Origin-Host", rpURL.Host)
 		req.URL.Scheme = rpURL.Scheme
-		req.URL.Host = rpURL.Host
+		if *cHost != "" {
+			req.URL.Host = *cHost
+		} else {
+			req.URL.Host = rpURL.Host
+		}
 		httpLog(req)
 	}}
 
