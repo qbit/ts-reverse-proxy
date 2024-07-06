@@ -19,10 +19,10 @@
         in {
           ts-reverse-proxy = buildGoModule {
             pname = "ts-reverse-proxy";
-            version = "v1.0.4";
+            version = "v1.0.6";
             src = ./.;
 
-            vendorHash = "sha256-qnWiByRitZ6rvB0zbDo6Jhh5pXBHz3/+IY5fCoBAdrE=";
+            vendorHash = "sha256-7Xlu3mKQwI5n6wdYOkcdgF/9BU4RIGTg57ly05Fk3AY=";
           };
         });
 
