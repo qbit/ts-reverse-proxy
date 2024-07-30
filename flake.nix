@@ -13,6 +13,7 @@
       overlay = final: prev: {
         inherit (self.packages.${prev.system}) ts-reverse-proxy;
       };
+      nixosModule = import ./module.nix;
       packages = forAllSystems (system:
         let pkgs = nixpkgsFor.${system};
         buildGoModule = pkgs.buildGoModule;
